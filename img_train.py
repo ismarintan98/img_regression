@@ -2,9 +2,9 @@ import cv2 as cv
 import numpy as np
 
 
-img = cv.imread('dataset/10_a.jpg')
+img = cv.imread('dataset/10.jpg')
 
-txt_data = np.loadtxt('dataset/10_a.txt', delimiter=',')
+txt_data = np.loadtxt('dataset/10.txt', delimiter=',')
 
 faces = txt_data[0:4]
 eyes1 = txt_data[4:8]

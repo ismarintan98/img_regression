@@ -77,27 +77,16 @@ while True:
                                 
 
                                 # gambar asli                        
-                                with open('dataset/'+ jarak + '_a' + '.txt','w') as f:
+                                with open('dataset/'+ jarak + '.txt','w') as f:
                                         f.write(str(faces[0][0])+','+str(faces[0][1])+','+str(faces[0][2])+','+str(faces[0][3])+',')
                                         
                                         if(len(eyes) == 2):
                                                 f.write(str(eyes[0][0])+','+str(eyes[0][1])+','+str(eyes[0][2])+','+str(eyes[0][3])+',')
                                                 f.write(str(eyes[1][0])+','+str(eyes[1][1])+','+str(eyes[1][2])+','+str(eyes[1][3])+'\n')
 
-                                cv.imwrite('dataset/' + jarak +'_a' + '.jpg', frame_save)
+                                cv.imwrite('dataset/' + jarak + '.jpg', frame_save)
 
 
-                                # gambar mirror
-                                with open('dataset/'+ jarak + '_b' + '.txt','w') as f:
-                                        f.write(str(faces[0][0])+','+str(faces[0][1])+','+str(faces[0][2])+','+str(faces[0][3])+',')
-                                        
-                                        if(len(eyes) == 2):
-                                                f.write(str(eyes[1][0])+','+str(eyes[1][1])+','+str(eyes[1][2])+','+str(eyes[1][3])+',')
-                                                f.write(str(eyes[0][0])+','+str(eyes[0][1])+','+str(eyes[0][2])+','+str(eyes[0][3])+'\n')
-                                                
-
-                                frame_save_mirror = cv.flip(frame_save, 1)
-                                cv.imwrite('dataset/' + jarak +'_b' + '.jpg', frame_save_mirror)
 
                                 print("---- Gambar tersimpan ----")
                                 print("faces: ", faces)
