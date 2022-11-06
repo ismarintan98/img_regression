@@ -44,20 +44,24 @@ for i in range(numData):
         faces = koordinat[0:4]
         eye_left = koordinat[4:8]
         eye_right = koordinat[8:12]
+        jarak = koordinat[12]
 
         x1 = int(faces[0])
         y1 = int(faces[1])
         x2 = int(faces[0] + faces[2])
         y2 = int(faces[1] + faces[3])
 
-        #komponen deteksi [luas_wajah,luas_mata_kiri,luas_mata_kanan]
-        komponen = [faces[2]*faces[3], eye_left[2]*eye_left[3], eye_right[2]*eye_right[3]]
+        #komponen deteksi [luas_wajah,luas_mata_kiri,luas_mata_kanan,jarak]
+        komponen = [faces[2]*faces[3], eye_left[2]*eye_left[3], eye_right[2]*eye_right[3], jarak]
 
+        print("------ Komponen ------")
         print("luas wajah:", komponen[0])
         print("luas mata kiri:", komponen[1])
         print("luas mata kanan:", komponen[2])
+        print("jarak :", komponen[3])
 
 
+        print("------ Koordinat ------")
         print("koordinat wajah: ", x1, y1, x2, y2)
         cv.rectangle(img, (x1,y1), (x2,y2), (255,0,0), 2)
         print("koordinat mata kiri: ", int(eye_left[0]), int(eye_left[1]), int(eye_left[0] + eye_left[2]), int(eye_left[1] + eye_left[3]))
@@ -67,5 +71,6 @@ for i in range(numData):
         
         cv.imshow('img:'+ str(i+1), list_img[i])
         cv.waitKey(0)
+        cv.destroyAllWindows()
         
         

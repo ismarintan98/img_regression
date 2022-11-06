@@ -18,7 +18,7 @@ print("tekan 'q' untuk keluar")
 print("tekan 's' untuk menyimpan gambar")
 
 
-
+num_data = 0
 
 while True:
         ret, frame = cap.read()
@@ -81,18 +81,20 @@ while True:
                                         eye_right = eyes[0]
 
                                 jarak = input("Masukkan jarak (cm): ")
+                                
 
                                 
 
-                                with open('dataset/'+ jarak + '.txt','w') as f:
+                                with open('dataset/'+str(num_data)+'_'+ jarak + '.txt','w') as f:
                                         f.write(str(faces[0][0])+','+str(faces[0][1])+','+str(faces[0][2])+','+str(faces[0][3])+',')
                                         
                                         if(len(eyes) == 2):
                                                 f.write(str(eye_left[0])+','+str(eye_left[1])+','+str(eye_left[2])+','+str(eye_left[3])+',')
-                                                f.write(str(eye_right[0])+','+str(eye_right[1])+','+str(eye_right[2])+','+str(eye_right[3])+'\n')
-                                                
+                                                f.write(str(eye_right[0])+','+str(eye_right[1])+','+str(eye_right[2])+','+str(eye_right[3])+',')
+                                        
+                                        f.write(jarak+'\n')        
 
-                                cv.imwrite('dataset/' + jarak + '.jpg', frame_save)
+                                cv.imwrite('dataset/'+str(num_data)+'_'+ jarak + '.jpg', frame_save)
 
 
 
@@ -100,6 +102,8 @@ while True:
                                 print("faces: ", faces)
                                 print("eyes left: ", eye_left)
                                 print("eyes right: ", eye_right)
+
+                                num_data += 1
                        
 
                                 print("----- Kembali ke menu utama -----")
