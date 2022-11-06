@@ -18,7 +18,7 @@ print("tekan 'q' untuk keluar")
 print("tekan 's' untuk menyimpan gambar")
 
 
-num_data = 0
+num_data = 2
 
 while True:
         ret, frame = cap.read()
