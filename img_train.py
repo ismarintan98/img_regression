@@ -5,44 +5,67 @@
 
 import cv2 as cv
 import numpy as np
+import os
 
+datasetPath = 'dataset/'
+listData = os.listdir(datasetPath)
+numData = int(len(listData)/2)
 
-img = cv.imread('dataset/10.jpg')
-img_mirror = cv.flip(img, 1)
+if numData == 0:
+        print("---- Tidak ada data ----")
+        print("---- Silahkan buat data terlebih dahulu ----")
+        exit()        
+else:
+        
+        print("Ditemukan", numData, "data")
 
-txt_data = np.loadtxt('dataset/10.txt', delimiter=',')
+        idx_img = 0
+        idx_txt = 1
+        list_img = []
+        list_koordinat = []
+        for i in range(numData):
+            img_buff = cv.imread(datasetPath + listData[idx_img])
+            list_img.append(img_buff)
 
-faces = txt_data[0:4]
-eyes_left = txt_data[4:8]
-eyes_right = txt_data[8:12]
+            txt_buff = np.loadtxt(datasetPath + listData[idx_txt], delimiter=',')
+            list_koordinat.append(txt_buff)
 
-
-print(faces)
-print(eyes_left)
-print(eyes_right)
-
-cv.rectangle(img, (int(faces[0]), int(faces[1])), (int(faces[0]+faces[2]), int(faces[1]+faces[3])), (0, 255, 0), 2) 
-cv.rectangle(img, (int(eyes_left[0]), int(eyes_left[1])), (int(eyes_left[0]+eyes_left[2]), int(eyes_left[1]+eyes_left[3])), (255, 0, 0), 2)
-cv.rectangle(img, (int(eyes_right[0]), int(eyes_right[1])), (int(eyes_right[0]+eyes_right[2]), int(eyes_right[1]+eyes_right[3])), (0, 0, 255), 2)
-
-
-faces_mirror = np.copy(faces)
-eyes_left_mirror = np.copy(eyes_right)
-eyes_right_mirror = np.copy(eyes_left)
-
-faces_mirror[0] = img.shape[1] - faces[0] - faces[2]
-eyes_left_mirror[0] = img.shape[1] - eyes_right[0] - eyes_right[2]
-eyes_right_mirror[0] = img.shape[1] - eyes_left[0] - eyes_left[2]
-
-cv.rectangle(img_mirror, (int(faces_mirror[0]), int(faces_mirror[1])), (int(faces_mirror[0]+faces_mirror[2]), int(faces_mirror[1]+faces_mirror[3])), (0, 255, 0), 2)
-cv.rectangle(img_mirror, (int(eyes_left_mirror[0]), int(eyes_left_mirror[1])), (int(eyes_left_mirror[0]+eyes_left_mirror[2]), int(eyes_left_mirror[1]+eyes_left_mirror[3])), (255, 0, 0), 2)
-cv.rectangle(img_mirror, (int(eyes_right_mirror[0]), int(eyes_right_mirror[1])), (int(eyes_right_mirror[0]+eyes_right_mirror[2]), int(eyes_right_mirror[1]+eyes_right_mirror[3])), (0, 0, 255), 2)
+            idx_img += 2
+            idx_txt += 2
 
 
 
-cv.imshow('img', img)
-cv.imshow('img_mirror', img_mirror)
+for i in range(numData):
+        print("---- Data ke-", i+1, "----")
 
-cv.waitKey(0)
+        img = list_img[i]
+        koordinat = list_koordinat[i]
+
+        faces = koordinat[0:4]
+        eye_left = koordinat[4:8]
+        eye_right = koordinat[8:12]
+
+        x1 = int(faces[0])
+        y1 = int(faces[1])
+        x2 = int(faces[0] + faces[2])
+        y2 = int(faces[1] + faces[3])
+
+        #komponen deteksi [luas_wajah,luas_mata_kiri,luas_mata_kanan]
+        komponen = [faces[2]*faces[3], eye_left[2]*eye_left[3], eye_right[2]*eye_right[3]]
+
+        print("luas wajah:", komponen[0])
+        print("luas mata kiri:", komponen[1])
+        print("luas mata kanan:", komponen[2])
 
 
+        print("koordinat wajah: ", x1, y1, x2, y2)
+        cv.rectangle(img, (x1,y1), (x2,y2), (255,0,0), 2)
+        print("koordinat mata kiri: ", int(eye_left[0]), int(eye_left[1]), int(eye_left[0] + eye_left[2]), int(eye_left[1] + eye_left[3]))
+        cv.rectangle(img, (int(eye_left[0]), int(eye_left[1])), (int(eye_left[0] + eye_left[2]), int(eye_left[1] + eye_left[3])), (0,255,0), 2)
+        print("koordinat mata kanan: ", int(eye_right[0]), int(eye_right[1]), int(eye_right[0] + eye_right[2]), int(eye_right[1] + eye_right[3]))
+        cv.rectangle(img, (int(eye_right[0]), int(eye_right[1])), (int(eye_right[0] + eye_right[2]), int(eye_right[1] + eye_right[3])), (0,0,255), 2)
+        
+        cv.imshow('img:'+ str(i+1), list_img[i])
+        cv.waitKey(0)
+        
+        
