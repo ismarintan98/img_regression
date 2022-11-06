@@ -8,33 +8,36 @@ import numpy as np
 
 
 img = cv.imread('dataset/10.jpg')
+img_mirror = cv.flip(img, 1)
 
 txt_data = np.loadtxt('dataset/10.txt', delimiter=',')
 
 faces = txt_data[0:4]
-eyes1 = txt_data[4:8]
-eyes2 = txt_data[8:12]
+eyes_left = txt_data[4:8]
+eyes_right = txt_data[8:12]
+
 
 print(faces)
-print(eyes1)
-print(eyes2)
+print(eyes_left)
+print(eyes_right)
 
 cv.rectangle(img, (int(faces[0]), int(faces[1])), (int(faces[0]+faces[2]), int(faces[1]+faces[3])), (0, 255, 0), 2) 
-cv.rectangle(img, (int(eyes1[0]), int(eyes1[1])), (int(eyes1[0]+eyes1[2]), int(eyes1[1]+eyes1[3])), (0, 0, 255), 2) 
-cv.rectangle(img, (int(eyes2[0]), int(eyes2[1])), (int(eyes2[0]+eyes2[2]), int(eyes2[1]+eyes2[3])), (0, 0, 255), 2)
+cv.rectangle(img, (int(eyes_left[0]), int(eyes_left[1])), (int(eyes_left[0]+eyes_left[2]), int(eyes_left[1]+eyes_left[3])), (255, 0, 0), 2)
+cv.rectangle(img, (int(eyes_right[0]), int(eyes_right[1])), (int(eyes_right[0]+eyes_right[2]), int(eyes_right[1]+eyes_right[3])), (0, 0, 255), 2)
 
-img_mirror = cv.flip(img, 1)
+
 faces_mirror = np.copy(faces)
-eyes1_mirror = np.copy(eyes1)
-eyes2_mirror = np.copy(eyes2)
+eyes_left_mirror = np.copy(eyes_right)
+eyes_right_mirror = np.copy(eyes_left)
 
 faces_mirror[0] = img.shape[1] - faces[0] - faces[2]
-eyes1_mirror[0] = img.shape[1] - eyes1[0] - eyes1[2]
-eyes2_mirror[0] = img.shape[1] - eyes2[0] - eyes2[2]
+eyes_left_mirror[0] = img.shape[1] - eyes_right[0] - eyes_right[2]
+eyes_right_mirror[0] = img.shape[1] - eyes_left[0] - eyes_left[2]
 
 cv.rectangle(img_mirror, (int(faces_mirror[0]), int(faces_mirror[1])), (int(faces_mirror[0]+faces_mirror[2]), int(faces_mirror[1]+faces_mirror[3])), (0, 255, 0), 2)
-cv.rectangle(img_mirror, (int(eyes1_mirror[0]), int(eyes1_mirror[1])), (int(eyes1_mirror[0]+eyes1_mirror[2]), int(eyes1_mirror[1]+eyes1_mirror[3])), (0, 0, 255), 2)
-cv.rectangle(img_mirror, (int(eyes2_mirror[0]), int(eyes2_mirror[1])), (int(eyes2_mirror[0]+eyes2_mirror[2]), int(eyes2_mirror[1]+eyes2_mirror[3])), (0, 0, 255), 2)
+cv.rectangle(img_mirror, (int(eyes_left_mirror[0]), int(eyes_left_mirror[1])), (int(eyes_left_mirror[0]+eyes_left_mirror[2]), int(eyes_left_mirror[1]+eyes_left_mirror[3])), (255, 0, 0), 2)
+cv.rectangle(img_mirror, (int(eyes_right_mirror[0]), int(eyes_right_mirror[1])), (int(eyes_right_mirror[0]+eyes_right_mirror[2]), int(eyes_right_mirror[1]+eyes_right_mirror[3])), (0, 0, 255), 2)
+
 
 
 cv.imshow('img', img)

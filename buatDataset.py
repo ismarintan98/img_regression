@@ -72,6 +72,14 @@ while True:
 
                         if cv.waitKey(1) & 0xFF == ord('y'):
 
+                                # cari mata kiri atau kanan
+                                if eyes[0][0] < eyes[1][0]:
+                                        eye_left = eyes[0]
+                                        eye_right = eyes[1]
+                                else:
+                                        eye_left = eyes[1]
+                                        eye_right = eyes[0]
+
                                 jarak = input("Masukkan jarak (cm): ")
 
                                 
@@ -80,8 +88,9 @@ while True:
                                         f.write(str(faces[0][0])+','+str(faces[0][1])+','+str(faces[0][2])+','+str(faces[0][3])+',')
                                         
                                         if(len(eyes) == 2):
-                                                f.write(str(eyes[0][0])+','+str(eyes[0][1])+','+str(eyes[0][2])+','+str(eyes[0][3])+',')
-                                                f.write(str(eyes[1][0])+','+str(eyes[1][1])+','+str(eyes[1][2])+','+str(eyes[1][3])+'\n')
+                                                f.write(str(eye_left[0])+','+str(eye_left[1])+','+str(eye_left[2])+','+str(eye_left[3])+',')
+                                                f.write(str(eye_right[0])+','+str(eye_right[1])+','+str(eye_right[2])+','+str(eye_right[3])+'\n')
+                                                
 
                                 cv.imwrite('dataset/' + jarak + '.jpg', frame_save)
 
@@ -89,8 +98,8 @@ while True:
 
                                 print("---- Gambar tersimpan ----")
                                 print("faces: ", faces)
-                                print("eyes 1: ", eyes[0])
-                                print("eyes 2: ", eyes[1])
+                                print("eyes left: ", eye_left)
+                                print("eyes right: ", eye_right)
                        
 
                                 print("----- Kembali ke menu utama -----")
