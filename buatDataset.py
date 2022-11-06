@@ -76,7 +76,6 @@ while True:
 
                                 
 
-                                # gambar asli                        
                                 with open('dataset/'+ jarak + '.txt','w') as f:
                                         f.write(str(faces[0][0])+','+str(faces[0][1])+','+str(faces[0][2])+','+str(faces[0][3])+',')
                                         
