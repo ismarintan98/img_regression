@@ -11,6 +11,10 @@ import time
 
 datasetPath = 'dataset/'
 
+layer1 = nn_layers(3,12,'sigmoid')
+layer2 = nn_layers(12,1,'purelin')
+learning_rate =  0.02
+
 def LoadData(path):
 
     listData = os.listdir(path)
@@ -49,6 +53,71 @@ def normalize(x, x_min, x_max):
 
 def denormalize(x, x_min, x_max):
     return 0.5 * (x + 1) * (x_max - x_min) + x_min
+
+
+def playNNtoData():
+
+    face_cascade = cv.CascadeClassifier('haarcascades/haarcascade_frontalface_default.xml')
+    eye_cascade = cv.CascadeClassifier('haarcascades/haarcascade_eye.xml')
+
+    cap = cv.VideoCapture(1)
+
+    while True:
+        ret, frame = cap.read()
+
+        frame_scled = cv.resize(frame, (0, 0), fx=0.5, fy=0.5)
+        frame_gray = cv.cvtColor(frame_scled, cv.COLOR_BGR2GRAY)
+
+        faces = face_cascade.detectMultiScale(frame_gray, 1.3, 5)
+        eye = eye_cascade.detectMultiScale(frame_gray, 1.3, 10)
+
+        
+
+        for (x, y, w, h) in faces:
+            cv.rectangle(frame_scled, (x, y), (x+w, y+h), (255, 0, 0), 2)
+            
+            for (ex, ey, ew, eh) in eye:
+
+                cv.rectangle(frame_scled, (ex, ey),
+                             (ex+ew, ey+eh), (0, 255, 0), 2)
+
+
+        
+        #if number of face detected is 1
+
+        faces_size = 0
+        eye_L_size = 0
+        eye_R_size = 0
+
+        allDetect = 0
+
+        if len(faces) == 1:
+            faces_size = faces[0][2]*faces[0][3]
+            allDetect += 1
+        else :
+            allDetect = -1
+        
+        if len(eye) == 2:
+            eye_L_size = eye[0][2]*eye[0][3]
+            eye_R_size = eye[1][2]*eye[1][3]
+            allDetect += 1
+        else :
+            allDetect = -1
+
+        if allDetect == 2:
+            print("F", faces_size, "L", eye_L_size, "R", eye_R_size)
+        
+
+
+
+    
+        cv.imshow('frame', frame_scled)
+
+
+
+
+        if cv.waitKey(1) & 0xFF == ord('q'):
+            break
 
 
 
@@ -93,10 +162,6 @@ if __name__ == '__main__':
 
     input_layer = np.zeros((3, 1))
     output_layer = np.zeros((1, 1))
-    
-    layer1 = nn_layers(3,12,'sigmoid')
-    layer2 = nn_layers(12,1,'purelin')
-    learning_rate =  0.02
 
     dataMax = [0,0,0,0]
     dataMin = [0,0,0,0]
@@ -116,7 +181,9 @@ if __name__ == '__main__':
 
 
     for i in range(10000):
-        print("Epoch ke-", i+1)
+        if(i%1000 == 0):
+            print("     -> epoch ke-",i)
+        
         for j in range(lenDataset):
     
             input_layer[0] = normalize(list_luasWajah[j], dataMin[0], dataMax[0])
@@ -149,7 +216,7 @@ if __name__ == '__main__':
         prediksi = denormalize(layer2.output_layer[0], dataMin[3], dataMax[3])
         listPrediksi[i] = prediksi
         
-        print("x1", list_luasWajah[i], "x2", list_luasMataKiri[i], "x3", list_luasMataKanan[i], "y", list_trueJarak[i], "prediksi", prediksi)
+        print("x1", list_luasWajah[i], "x2", list_luasMataKiri[i], "x3", list_luasMataKanan[i], "y", list_trueJarak[i], "prediksi", prediksi[0])
 
 
 
@@ -157,12 +224,86 @@ if __name__ == '__main__':
         
 
     print("     ->  ---- Testing done ----")
-    RMSE = np.sqrt(np.mean((listPrediksi - list_trueJarak)**2))
+    RMSE = np.sqrt(np.mean((listPrediksi - list_trueJarak)**2)) #type: ignore
     print("     ->  ---- RMSE = ", RMSE, "----")
+
+    #------------- Play To Camera ----------------
+    # playNNtoData()
+    face_cascade = cv.CascadeClassifier('haarcascades/haarcascade_frontalface_default.xml')
+    eye_cascade = cv.CascadeClassifier('haarcascades/haarcascade_eye.xml')
+
+    cap = cv.VideoCapture(1)
+
+    while True:
+        ret, frame = cap.read()
+
+        frame_scled = cv.resize(frame, (0, 0), fx=1, fy=1)
+        frame_gray = cv.cvtColor(frame_scled, cv.COLOR_BGR2GRAY)
+
+        faces = face_cascade.detectMultiScale(frame_gray, 1.05, 5)
+        eye = eye_cascade.detectMultiScale(frame_gray, 1.05, 5)
+
+        
+
+        for (x, y, w, h) in faces:
+            cv.rectangle(frame_scled, (x, y), (x+w, y+h), (255, 0, 0), 2)
+            
+            for (ex, ey, ew, eh) in eye:
+
+                cv.rectangle(frame_scled, (ex, ey),
+                             (ex+ew, ey+eh), (0, 255, 0), 2)
+
+
+        
+        #if number of face detected is 1
+
+        faces_size = 0
+        eye_L_size = 0
+        eye_R_size = 0
+
+        allDetect = 0
+
+        if len(faces) == 1:
+            faces_size = faces[0][2]*faces[0][3]
+            allDetect += 1
+        else :
+            allDetect = -1
+        
+        if len(eye) == 2:
+            eye_L_size = eye[0][2]*eye[0][3]
+            eye_R_size = eye[1][2]*eye[1][3]
+            allDetect += 1
+        else :
+            allDetect = -1
+
+        if allDetect == 2:
+            # print("F", faces_size, "L", eye_L_size, "R", eye_R_size)
+            input_layer[0] = normalize(faces_size, dataMin[0], dataMax[0])
+            input_layer[1] = normalize(eye_L_size, dataMin[1], dataMax[1])
+            input_layer[2] = normalize(eye_R_size, dataMin[2], dataMax[2])
+
+            layer1.forward(input_layer)
+            layer2.forward(layer1.output_layer)
+
+            prediksi = denormalize(layer2.output_layer[0], dataMin[3], dataMax[3])
+            print("Jarak", prediksi[0])
+        
+
 
 
     
+        cv.imshow('frame', frame_scled)
 
+
+
+
+        if cv.waitKey(1) & 0xFF == ord('q'):
+            break
+
+
+
+
+# playNNtoData()
     
 
     
