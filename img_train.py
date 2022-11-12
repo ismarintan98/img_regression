@@ -141,7 +141,7 @@ for i in range(numData):
 
 time_start = time.time()
 
-for i in range(1000000):
+for i in range(1000):
         
         if i % 10000 == 0:
                 print("---- Iterasi ke-", i+1, "----")
