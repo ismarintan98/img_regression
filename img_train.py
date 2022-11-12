@@ -72,5 +72,8 @@ for i in range(numData):
         cv.imshow('img:'+ str(i+1), list_img[i])
         cv.waitKey(0)
         cv.destroyAllWindows()
+
+
+        
         
         
