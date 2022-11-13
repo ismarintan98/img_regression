@@ -55,71 +55,6 @@ def denormalize(x, x_min, x_max):
     return 0.5 * (x + 1) * (x_max - x_min) + x_min
 
 
-def playNNtoData():
-
-    face_cascade = cv.CascadeClassifier('haarcascades/haarcascade_frontalface_default.xml')
-    eye_cascade = cv.CascadeClassifier('haarcascades/haarcascade_eye.xml')
-
-    cap = cv.VideoCapture(1)
-
-    while True:
-        ret, frame = cap.read()
-        frame_scled = np.copy(frame)
-        # frame_scled = cv.resize(frame, (0, 0), fx=0.5, fy=0.5)
-        frame_gray = cv.cvtColor(frame_scled, cv.COLOR_BGR2GRAY)
-
-        faces = face_cascade.detectMultiScale(frame_gray, 1.3, 5)
-        eye = eye_cascade.detectMultiScale(frame_gray, 1.3, 10)
-
-        
-
-        for (x, y, w, h) in faces:
-            cv.rectangle(frame_scled, (x, y), (x+w, y+h), (255, 0, 0), 2)
-            
-            for (ex, ey, ew, eh) in eye:
-
-                cv.rectangle(frame_scled, (ex, ey),
-                             (ex+ew, ey+eh), (0, 255, 0), 2)
-
-
-        
-        #if number of face detected is 1
-
-        faces_size = 0
-        eye_L_size = 0
-        eye_R_size = 0
-
-        allDetect = 0
-
-        if len(faces) == 1:
-            faces_size = faces[0][2]*faces[0][3]
-            allDetect += 1
-        else :
-            allDetect = -1
-        
-        if len(eye) == 2:
-            eye_L_size = eye[0][2]*eye[0][3]
-            eye_R_size = eye[1][2]*eye[1][3]
-            allDetect += 1
-        else :
-            allDetect = -1
-
-        if allDetect == 2:
-            print("F", faces_size, "L", eye_L_size, "R", eye_R_size)
-        
-
-
-
-    
-        cv.imshow('frame', frame_scled)
-
-
-
-
-        if cv.waitKey(1) & 0xFF == ord('q'):
-            break
-
-
 
 if __name__ == '__main__':
 
@@ -181,8 +116,8 @@ if __name__ == '__main__':
 
 
     for i in range(30000):
-        # if(i%10000 == 0):
-            # print("     -> epoch ke-",i)
+        if(i%10000 == 0):
+            print("     -> epoch ke-",i)
         
         for j in range(lenDataset):
             #skip data nomor genap
@@ -299,7 +234,6 @@ if __name__ == '__main__':
 
             prediksi = denormalize(layer2.output_layer[0], dataMin[3], dataMax[3])
             print("Jarak", prediksi[0])
-            # cv.putText(frame_scled, "Jarak : " + str(prediksi[0]), (10, 30), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
             cv.putText(frame_scled, "Jarak : " + str(int(prediksi[0])), (10, 30), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
             cv.putText(frame_scled,"L Wajah : " + str(faces_size), (10, 60), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
             cv.putText(frame_scled,"L Mata Kiri : " + str(eye_L_size), (10, 90), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
@@ -319,7 +253,6 @@ if __name__ == '__main__':
 
         
 
-# playNNtoData()
     
 
     

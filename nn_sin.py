@@ -1,8 +1,6 @@
 import math
-
 import numpy as np
 import matplotlib.pyplot as plt
-
 
 class nn_layers:
 
@@ -19,11 +17,7 @@ class nn_layers:
         self.error  = np.zeros((hidden_size,1))
         self.sensitivity = np.zeros((hidden_size,1))
         self.buffMatrix = np.zeros((hidden_size,hidden_size))
-
-
-
-        
-
+      
     def forward(self,input):
         self.input_layer = input
         self.hidden_layer = np.dot(self.weights,self.input_layer) + self.bias
@@ -50,8 +44,6 @@ class nn_layers:
 
         self.weights = self.weights - learning_rate * np.dot(self.sensitivity,np.transpose(self.input_layer))
         self.bias = self.bias - learning_rate * self.sensitivity
-
-    
 
     def backwardMidLayer(self,next_layer,learning_rate):
         #gradient sigmoid
