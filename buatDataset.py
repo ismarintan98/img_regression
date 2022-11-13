@@ -20,7 +20,7 @@ print("tekan 's' untuk menyimpan gambar")
 pathSave = 'dataset3/'
 
 
-num_data = 2
+num_data = 1
 
 while True:
         ret, frame = cap.read()
