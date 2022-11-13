@@ -9,11 +9,11 @@ import os
 from nn_sin import nn_layers
 import time
 
-datasetPath = 'dataset/'
+datasetPath = 'dataset2/'
 
 layer1 = nn_layers(3,12,'sigmoid')
 layer2 = nn_layers(12,1,'purelin')
-learning_rate =  0.02
+learning_rate =  0.01
 
 def LoadData(path):
 
@@ -64,8 +64,8 @@ def playNNtoData():
 
     while True:
         ret, frame = cap.read()
-
-        frame_scled = cv.resize(frame, (0, 0), fx=0.5, fy=0.5)
+        frame_scled = np.copy(frame)
+        # frame_scled = cv.resize(frame, (0, 0), fx=0.5, fy=0.5)
         frame_gray = cv.cvtColor(frame_scled, cv.COLOR_BGR2GRAY)
 
         faces = face_cascade.detectMultiScale(frame_gray, 1.3, 5)
@@ -180,7 +180,7 @@ if __name__ == '__main__':
 
 
 
-    for i in range(10000):
+    for i in range(50000):
         if(i%1000 == 0):
             print("     -> epoch ke-",i)
         
@@ -237,11 +237,12 @@ if __name__ == '__main__':
     while True:
         ret, frame = cap.read()
 
-        frame_scled = cv.resize(frame, (0, 0), fx=1, fy=1)
+        # frame_scled = cv.resize(frame, (0, 0), fx=1, fy=1)
+        frame_scled = np.copy(frame)
         frame_gray = cv.cvtColor(frame_scled, cv.COLOR_BGR2GRAY)
 
-        faces = face_cascade.detectMultiScale(frame_gray, 1.05, 5)
-        eye = eye_cascade.detectMultiScale(frame_gray, 1.05, 5)
+        faces = face_cascade.detectMultiScale(frame_gray, 1.3, 5)
+        eye = eye_cascade.detectMultiScale(frame_gray, 1.3, 5)
 
         
 

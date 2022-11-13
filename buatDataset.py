@@ -17,18 +17,21 @@ print("-------- Data Set Creator --------")
 print("tekan 'q' untuk keluar")
 print("tekan 's' untuk menyimpan gambar")
 
+pathSave = 'dataset3/'
+
 
 num_data = 2
 
 while True:
         ret, frame = cap.read()
-        frame_scaled = cv.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv.INTER_AREA)
+        frame_scaled = np.copy(frame)
+        # frame_scaled = cv.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv.INTER_AREA)
         frame_save = np.copy(frame_scaled)
 
         gray = cv.cvtColor(frame_scaled, cv.COLOR_BGR2GRAY)
 
         faces = face_detector.detectMultiScale(gray, 1.3, 5)
-        eyes = eye_detector.detectMultiScale(gray, 1.3, 5)
+        eyes = eye_detector.detectMultiScale(gray, 1.3, 3)
 
         for (x,y,w,h) in faces:
                 cv.rectangle(frame_scaled, (x,y), (x+w, y+h), (255,0,0), 2)
@@ -85,7 +88,7 @@ while True:
 
                                 
 
-                                with open('dataset/'+str(num_data)+'_'+ jarak + '.txt','w') as f:
+                                with open(pathSave+str(num_data)+'_'+ jarak + '.txt','w') as f:
                                         f.write(str(faces[0][0])+','+str(faces[0][1])+','+str(faces[0][2])+','+str(faces[0][3])+',')
                                         
                                         if(len(eyes) == 2):
@@ -94,7 +97,7 @@ while True:
                                         
                                         f.write(jarak+'\n')        
 
-                                cv.imwrite('dataset/'+str(num_data)+'_'+ jarak + '.jpg', frame_save)
+                                cv.imwrite(pathSave+str(num_data)+'_'+ jarak + '.jpg', frame_save)
 
 
 
