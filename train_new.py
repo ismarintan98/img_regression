@@ -288,7 +288,11 @@ if __name__ == '__main__':
 
             prediksi = denormalize(layer2.output_layer[0], dataMin[3], dataMax[3])
             print("Jarak", prediksi[0])
-            cv.putText(frame_scled, "Jarak : " + str(prediksi[0]), (10, 30), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
+            # cv.putText(frame_scled, "Jarak : " + str(prediksi[0]), (10, 30), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
+            cv.putText(frame_scled, "Jarak : " + str(int(prediksi[0])), (10, 30), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
+            cv.putText(frame_scled,"L Wajah : " + str(faces_size), (10, 60), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
+            cv.putText(frame_scled,"L Mata Kiri : " + str(eye_L_size), (10, 90), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
+            cv.putText(frame_scled,"L Mata Kanan : " + str(eye_R_size), (10, 120), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
         
 
 
