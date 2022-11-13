@@ -9,7 +9,7 @@ import os
 from nn_sin import nn_layers
 import time
 
-datasetPath = 'dataset/'
+datasetPath = 'dataset2/'
 listData = os.listdir(datasetPath)
 numData = int(len(listData)/2)
 
@@ -81,9 +81,9 @@ for i in range(numData):
         print("koordinat mata kanan: ", int(eye_right[0]), int(eye_right[1]), int(eye_right[0] + eye_right[2]), int(eye_right[1] + eye_right[3]))
         cv.rectangle(img, (int(eye_right[0]), int(eye_right[1])), (int(eye_right[0] + eye_right[2]), int(eye_right[1] + eye_right[3])), (0,0,255), 2)
         
-        # cv.imshow('img:'+ str(i+1), list_img[i])
-        # cv.waitKey(0)
-        # cv.destroyAllWindows()
+        cv.imshow('img:'+ str(i+1), list_img[i])
+        cv.waitKey(0)
+        cv.destroyAllWindows()
 
         dat.append(komponen)
 
