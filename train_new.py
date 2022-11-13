@@ -180,11 +180,14 @@ if __name__ == '__main__':
 
 
 
-    for i in range(50000):
-        if(i%1000 == 0):
-            print("     -> epoch ke-",i)
+    for i in range(30000):
+        # if(i%10000 == 0):
+            # print("     -> epoch ke-",i)
         
         for j in range(lenDataset):
+            #skip data nomor genap
+            if(j%2 == 0):
+                continue
     
             input_layer[0] = normalize(list_luasWajah[j], dataMin[0], dataMax[0])
             input_layer[1] = normalize(list_luasMataKiri[j], dataMin[1], dataMax[1])
@@ -202,9 +205,15 @@ if __name__ == '__main__':
     print("     ->  ---- Training done ----")  
 
     #------------- Test Data ----------------
-    print("# testing data...")
+    print("# testing data... #", lenDataset)
+    
+    RMSE = 0
 
     for i in range(lenDataset):
+        #skip data nomor ganjil
+        if(i%2 == 1):
+            continue
+        
         input_layer[0] = normalize(list_luasWajah[i], dataMin[0], dataMax[0])
         input_layer[1] = normalize(list_luasMataKiri[i], dataMin[1], dataMax[1])
         input_layer[2] = normalize(list_luasMataKanan[i], dataMin[2], dataMax[2])
@@ -217,6 +226,7 @@ if __name__ == '__main__':
         listPrediksi[i] = prediksi
         
         print("x1", list_luasWajah[i], "x2", list_luasMataKiri[i], "x3", list_luasMataKanan[i], "y", list_trueJarak[i], "prediksi", prediksi[0])
+        RMSE += (prediksi - list_trueJarak[i])**2
 
 
 
@@ -224,7 +234,8 @@ if __name__ == '__main__':
         
 
     print("     ->  ---- Testing done ----")
-    RMSE = np.sqrt(np.mean((listPrediksi - list_trueJarak)**2)) #type: ignore
+    RMSE = np.sqrt(RMSE/(lenDataset/2))
+    # RMSE = np.sqrt(np.mean((listPrediksi - list_trueJarak)**2)) #type: ignore
     print("     ->  ---- RMSE = ", RMSE, "----")
 
     #------------- Play To Camera ----------------
@@ -306,7 +317,7 @@ if __name__ == '__main__':
             break
 
 
-
+        
 
 # playNNtoData()
     
