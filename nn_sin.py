@@ -11,8 +11,14 @@ class nn_layers:
         self.gradient = np.zeros(hidden_size)
 
         self.weights = np.random.rand(hidden_size,input_size)
+        for i in range(hidden_size):
+            for j in range(input_size):
+                self.weights[i][j] = 0.1
 
         self.bias = np.random.rand(hidden_size,1)
+        for i in range(hidden_size):
+            self.bias[i] = 0.1
+            
         self.activation = activation
         self.error  = np.zeros((hidden_size,1))
         self.sensitivity = np.zeros((hidden_size,1))
